@@ -2,19 +2,29 @@ import React, { useRef, useState } from "react";
 import QrScanner from "qr-scanner";
 
 const Home = () => {
-  const videoRef = useRef(null)
-  const [scanner, setScanner] = useState(null)
+  const videoRef = useRef(null);
+  const [scanner, setScanner] = useState(null);
 
   const startScanner = () => {
     const qrScanner = new QrScanner(videoRef.current, (result) => {
-      window.open = result.data
-      qrScanner.stop()
-    })
-    setScanner(qrScanner)
-    qrScanner.start()
-  }
+      // Depure o resultado do QR Code
+      console.log("Resultado do QR Code: ", result.data); // Verifique o valor retornado aqui
+      
+      const qrValue = result.data;
 
+      // Verifique se o link está no formato correto
+      if (qrValue && qrValue.startsWith("https://memorial-iberia.vercel.app/funcionario/")) {
+        window.open(qrValue, "_blank"); // Abre o link em uma nova aba
+      } else {
+        alert("QR Code inválido ou com formato inesperado.");
+      }
 
+      qrScanner.stop(); // Interrompe a leitura do QR Code
+    });
+
+    setScanner(qrScanner);
+    qrScanner.start(); // Inicia o scanner de QR Code
+  };
 
   return (
     <div style={styles.container}>
@@ -27,8 +37,6 @@ const Home = () => {
     </div>
   );
 };
-
-
 
 const styles = {
   container: {
