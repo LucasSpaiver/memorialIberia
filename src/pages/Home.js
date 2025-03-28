@@ -18,8 +18,8 @@ const Home = () => {
 
   return (
     <div style={styles.container}>
-      <h1>Bem-vindo à Minha Página</h1>
-      <p>Escolha uma opção no menu acima.</p>
+      <h1>Bem-vindo ao Memorial Ibéria</h1>
+      <p>Clique no botão para ler o QRCode.</p>
       <button style={styles.button} onClick={startScanner}>
         Abrir Câmera para QR Code
       </button>
