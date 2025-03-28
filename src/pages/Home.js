@@ -7,7 +7,7 @@ const Home = () => {
 
   const startScanner = () => {
     const qrScanner = new QrScanner(videoRef.current, (result) => {
-      window.location.href = result.data
+      window.open = result.data
       qrScanner.stop()
     })
     setScanner(qrScanner)

@@ -1,16 +1,25 @@
-import React, { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import QrScanner from "qr-scanner";
 import funcionarios from "../data"; // Certifique-se de importar corretamente os dados dos funcionários
 
 const Funcionario = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const funcionario = funcionarios.find((f) => f.id === String(id));
   const videoRef = useRef(null);
   const [scanner, setScanner] = useState(null);
 
+  useEffect(() => {
+    if (!funcionario) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000); // Redireciona para a página inicial após 3 segundos
+    }
+  }, [funcionario, navigate]);
+
   if (!funcionario) {
-    return <h2>Funcionário não encontrado.</h2>;
+    return <h2>Funcionário não encontrado. Redirecionando...</h2>;
   }
 
   const startScanner = () => {
@@ -44,7 +53,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "100%",
+    minHeight: "100vh",
     backgroundColor: "#f4f4f4",
     padding: "10px",
   },
@@ -59,7 +68,7 @@ const styles = {
     maxWidth: "1024px",
     width: "100%",
     textAlign: "center",
-    maxHeight: "100%",
+    maxHeight: "80vh",
     overflowY: "auto",
   },
   image: {
@@ -81,8 +90,8 @@ const styles = {
     width: "100%",
     overflowWrap: "break-word",
     whiteSpace: "pre-line",
-    maxHeight: "1024px",
-    height: "100%",
+    maxHeight: "500px",
+    minHeight: "200px",
     overflowY: "auto",
     padding: "10px",
     boxSizing: "border-box",
