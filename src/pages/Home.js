@@ -4,27 +4,32 @@ import QrScanner from "qr-scanner";
 const Home = () => {
   const videoRef = useRef(null);
   const [scanner, setScanner] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const funcionario = funcionarios.find((f) => f.id === String(id));
+
+  useEffect(() => {
+      if (!funcionario) {
+        setTimeout(() => {
+          navigate("/");
+        }, 3000); // Redireciona para a página inicial após 3 segundos
+      }
+    }, [funcionario, navigate]);
+
+    if (!funcionario) {
+      return <h2>Funcionário não encontrado. Redirecionando...</h2>;
+    }
 
   const startScanner = () => {
-    const qrScanner = new QrScanner(videoRef.current, (result) => {
-      // Depure o resultado do QR Code
-      console.log("Resultado do QR Code: ", result.data); // Verifique o valor retornado aqui
-      
-      const qrValue = result.data;
-
-      // Verifique se o link está no formato correto
-      if (qrValue && qrValue.startsWith("https://memorial-iberia.vercel.app/funcionario/")) {
-        window.open(qrValue, "_blank"); // Abre o link em uma nova aba
-      } else {
-        alert("QR Code inválido ou com formato inesperado.");
+      if (videoRef.current) {
+        const qrScanner = new QrScanner(videoRef.current, (result) => {
+          window.location.href = result.data;
+          qrScanner.stop();
+        });
+        setScanner(qrScanner);
+        qrScanner.start();
       }
-
-      qrScanner.stop(); // Interrompe a leitura do QR Code
-    });
-
-    setScanner(qrScanner);
-    qrScanner.start(); // Inicia o scanner de QR Code
-  };
+    };
 
   return (
     <div style={styles.container}>
