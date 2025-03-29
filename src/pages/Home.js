@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
       if (!funcionario) {
         setTimeout(() => {
-          navigate("/");
+          navigate("/funcionario/");
         }, 3000); // Redireciona para a página inicial após 3 segundos
       }
     }, [funcionario, navigate]);
